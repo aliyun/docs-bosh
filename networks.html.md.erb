@@ -267,6 +267,7 @@ The Director does not enforce how many networks can be assigned to each job inst
 
 |           | manual network                                                | dynamic network           | vip network                          |
 |-----------|---------------------------------------------------------------|---------------------------|--------------------------------------|
+| Alicloud  | Single per job instance                                       | Single per job instance   | Single, corresponds to an elastic IP |
 | AWS       | Single per job instance                                       | Single per job instance   | Single, corresponds to an elastic IP |
 | Azure     | Multiple per job instance                                     | Multiple per job instance | Single, corresponds to a reserved IP |
 | OpenStack | [Multiple per job instance](openstack-multiple-networks.html) | Single per job instance   | Single, corresponds to a floating IP |
@@ -276,6 +277,7 @@ The Director does not enforce how many networks can be assigned to each job inst
 ---
 ## <a id='cloud-properties'></a> CPI Specific `cloud_properties`
 
+- [See Alibaba Cloud CPI network cloud properties](alicloud-cpi.html#networks)
 - [See AWS CPI network cloud properties](aws-cpi.html#networks)
 - [See Azure CPI network cloud properties](azure-cpi.html#networks)
 - [See OpenStack CPI network cloud properties](openstack-cpi.html#networks)
