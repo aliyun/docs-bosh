@@ -137,7 +137,7 @@ Your Alicloud credentials consist of an Access Key ID and a Secret Access Key. F
 
 1. Complete the Create Security Group Rules 22 form with the following information:
     * **Custom Port Rang**: 22/22
-    * **Authorization Object**: 0.0.0.0/0
+    * **Authorization Object**: Ip of running CLI
     * **Description**: SSH access from CLI
 
     <%= image_tag("images/deploy-bosh-to-alicloud/edit-security-group-rules.png") %>
@@ -149,15 +149,16 @@ Your Alicloud credentials consist of an Access Key ID and a Secret Access Key. F
         <th>Type</th>
         <th>Port Range</th>
         <th>Source</th>
+        <th>Priority</th>
         <th>Purpose</th>
       </tr>
 
-      <tr><td>Custom TCP Rule</td><td>22/22</td><td>(My IP)</td><td>SSH access from CLI</td></tr>
-      <tr><td>Custom TCP Rule</td><td>6868/6868</td><td>(My IP)</td><td>BOSH Agent access from CLI</td></tr>
-      <tr><td>Custom TCP Rule</td><td>25555/25555</td><td>(My IP)</td><td>BOSH Director access from CLI</td></tr>
+      <tr><td>Custom TCP Rule</td><td>22/22</td><td>(My IP)</td><td>1</td><td>SSH access from CLI</td></tr>
+      <tr><td>Custom TCP Rule</td><td>6868/6868</td><td>(My IP)</td><td>1</td><td>BOSH Agent access from CLI</td></tr>
+      <tr><td>Custom TCP Rule</td><td>25555/25555</td><td>(My IP)</td><td>1</td><td>BOSH Director access from CLI</td></tr>
 
-      <tr><td>All TCP</td><td>1/65535</td><td>ID of this security group</td><td>Management and data access</td></tr>
-      <tr><td>All UDP</td><td>1/65535</td><td>ID of this security group</td><td>Management and data access</td></tr>
+      <tr><td>All TCP</td><td>1/65535</td><td>0.0.0.0/0</td><td>10</td><td>Management and data access</td></tr>
+      <tr><td>All UDP</td><td>1/65535</td><td>0.0.0.0/0</td><td>10</td><td>Management and data access</td></tr>
     </table>
 
     <p class="note"><strong>Note</strong>:  Select *Authorization Type* to `Security Group Access` , click *Select the security group*. Note: The Alicloud Console should autocomplete the security group ID (e.g. "sg-0xiecd12ab34cd").</p>
