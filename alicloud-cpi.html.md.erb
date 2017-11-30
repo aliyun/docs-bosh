@@ -76,6 +76,7 @@ Schema for `cloud_properties` section:
 * **auto\_renew\_period** [Integer, optional]: Required if `auto_renew` is `True`, by months (range: 1, 2, 3, 6, 12).
 * **password** [String, optional]: Root password, no-effect with some stemcell, use jumpbox-user instead.
 * **key\_pair\_name** [String, optional]: Key pair name, no-effect with some stemcell, use jumpbox-user instead. Example: `bosh`.
+* **ram\_role\_name** [String, optional]: Name of the [RAM Role](alicloud-ram-role.html) that will be applied to all created VMs. Example: `bosh-director`.
 * **spot\_strategy** [String, optional]: The spot strategy of a Pay-As-You-Go instance, and it takes effect only when the InstanceChargeType is PostPaid. Valid value: `NoSpot`, `SpotWithPriceLimit` and `SpotAsPriceGo`. Default to `NoSpot`.
 * **spot\_price\_limit** [Float, optional]: The hourly price threshold of a instance, and it takes effect only when the InstanceChargeType is PostPaid. Three decimals is allowed at most.
 * **slbs** [Array, optional]: Array of [Load Balancer](https://www.alibabacloud.com/help/product/27537.htm) that should be attached to created VMs. Example: `["lb-2zegrgbsmjvxx1r1v26pn"]`.
@@ -84,7 +85,7 @@ Schema for `cloud_properties` section:
     * **size** [Integer, required]: Specifies the disk size in megabytes. The value should be equal to or greater than max{40_960,ImageID}
     * **category** [String, optional]: Category of the [disk](https://www.alibabacloud.com/help/doc-detail/25383.htm): `cloud_efficiency`, `cloud_ssd`. Defaults to `cloud_efficiency`.
 * **ephemeral_disk** [Hash, optional]: ephemeral disk of custom size.
-    * **size** [Integer, required]: Specifies the disk size in megabytes. Default is `20_480`
+    * **size** [Integer, required]: Specifies the disk size in megabytes. Valid value range is [20, 32768](gigabytes). Default is `20_480`
     * **category** [String, optional]: Category of the [disk](https://www.alibabacloud.com/help/doc-detail/25383.htm): `cloud_efficiency`, `cloud_ssd`. Defaults to `cloud_efficiency`.
     * **delete\_with\_instance** [Boolean, optional]: Will deleted with instance. Default is `True`
 
@@ -263,4 +264,5 @@ Code:"AliyunGoClientFailure", Message:"Get https://slb-pop.aliyuncs.com?******: 
 ```
 You need set an appropriate endpoint to avoid network delay.
 
-[Back to Table of Contents](index.html#cpi-config)
+---
+Next: [Using Alicloud RAM Role](alicloud-ram-role.html)
