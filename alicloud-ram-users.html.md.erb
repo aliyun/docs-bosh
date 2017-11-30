@@ -1,0 +1,93 @@
+---
+title: Creating Alibaba Cloud RAM Users
+---
+
+## <a id="create-user"></a> Creating New Alicloud RAM user
+
+1. Log in the Alicloud RAM user console: [https://ram.console.aliyun.com/#/user/list](https://ram.console.aliyun.com/#/user/list).
+
+1. Click **Create User** button.
+
+    <%= image_tag("images/deploy-bosh-to-alicloud/list-ram-users.png") %>
+
+1. Enter a user name, display name and other parameters for a new user, select **Automatically generate an Access key for this user**.
+
+    <%= image_tag("images/deploy-bosh-to-alicloud/create-ram-user.png") %>
+
+1. Click **Save Access Key information** to record `AccessKeyID` and `AccessKeySecret` for the new use. Click **cross** to get back to the list of users.
+
+    <%= image_tag("images/deploy-bosh-to-alicloud/get-ram-creds.png") %>
+
+## <a id="create-policy"></a> Creating New RAM Policy
+
+1. Log in the Alicloud RAM policy console: [https://ram.console.aliyun.com/#/policy/list/system](https://ram.console.aliyun.com/#/policy/list/system).
+
+1. Click **Create Authorization Policy**.
+
+    <%= image_tag("images/deploy-bosh-to-alicloud/list-ram-policies.png") %>
+
+1. Select **Blank Template**
+
+    <%= image_tag("images/deploy-bosh-to-alicloud/create-ram-policy-1.png") %>
+
+1. Enter a policy name, description and policy content.
+
+    <%= image_tag("images/deploy-bosh-to-alicloud/create-ram-policy-2.png") %>
+
+    For example your AlicloudBoshCPI's policy allows ECS and full VPC access:
+
+    ```yaml
+    {
+      "Version": "1",
+      "Statement": [
+        {
+          "Action": [
+            "ecs:CreateInstance",
+            "ecs:StartInstance",
+            "ecs:RebootInstance",
+            "ecs:StopInstance",
+            "ecs:DescribeInstances",
+            "ecs:DeleteInstance",
+            "ecs:CreateDisk",
+            "ecs:AttachDisk",
+            "ecs:DetachDisk",
+            "ecs:DescribeDisks",
+            "ecs:DeleteDisk",
+            "ecs:CreateSnapshot",
+            "ecs:DescribeSnapshots",
+            "ecs:DeleteSnapshot",
+            "ecs:AddTags",
+            "ecs:RemoveTags",
+            "ecs:DescribeTags"
+          ],
+          "Effect": "Allow",
+          "Resource": "*"
+        },
+        {
+          "Action": "vpc:*",
+          "Effect": "Allow",
+          "Resource": "*"
+        }
+      ]
+    }
+    ```
+
+    <p class="note">Note: It's highly encouraged to set very restrictive policy to limit unncessary access.</p>
+
+
+1. Click **Close** to get back to the list of policies.
+
+## <a id="authorize"></a> Authorizing Policy For RAM User
+
+1. Log in the Alicloud RAM user console: [https://ram.console.aliyun.com/#/user/list](https://ram.console.aliyun.com/#/user/list).
+
+1. Click **Authorize** on the specified user.
+
+    <%= image_tag("images/deploy-bosh-to-alicloud/authorize-ram-policy-1.png") %>
+
+1. Enter a key word, like 'AlicloudBosh', select the policy AlicloudBoshCPI, add it and click **OK** to finish authorization.
+
+    <%= image_tag("images/deploy-bosh-to-alicloud/authorize-ram-policy-2.png") %>
+
+
+

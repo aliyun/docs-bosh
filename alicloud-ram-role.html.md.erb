@@ -1,0 +1,86 @@
+---
+title: Using Alicloud RAM Role
+---
+
+This topic describes how to crate an [Alibaba Cloud RAM Role](https://www.alibabacloud.com/help/doc-detail/28649.html) and use it to configure BOSH and other VMs to avoid hard coding specific Alibaba Cloud Access Key.
+
+## <a id="create"></a> Create New Alicloud RAM Role
+
+1. Log in the Alicloud RAM Role console: [https://ram.console.aliyun.com/#/role/list](https://ram.console.aliyun.com/#/role/list).
+
+1. Click **Create Role** button.
+
+    <%= image_tag("images/deploy-bosh-to-alicloud/list-ram-roles.png") %>
+
+1. Select **Service Role** and **ECS Elastic Compute Service**
+
+    <%= image_tag("images/deploy-bosh-to-alicloud/create-ram-role-1.png") %>
+
+1. Enter a role name `bosh-director` and description, and then click **create** button to finish creation.
+
+    <%= image_tag("images/deploy-bosh-to-alicloud/create-ram-role-2.png") %>
+
+
+## <a id="configure"></a> Configure BOSH Use RAM Role
+
+You may have to create one or more RAM roles to limit access to Alicloud resources depending on how BOSH is configured and what software you are planning to deploy. Below is a example configuration.
+
+1. [Create RAM Policy](alicloud-ram-users.html#create-policy) `AlicloudBoshDirector` that allows `ecs:*` actions to create/delete VMs, attach/detach disks, create/delete snapshots, etc. Optionally add `slb:*` actions to add/remove VMs in/from SLBs if you are planning to use `slbs` configuration with resource pools.
+
+    ```json
+    {
+      "Version": "2012-10-17",
+      "Statement": [{
+        "Action": [
+          "ecs:CreateInstance",
+          "ecs:StartInstance",
+          "ecs:RebootInstance",
+          "ecs:StopInstance",
+          "ecs:DescribeInstances",
+          "ecs:DeleteInstance",
+          "ecs:CreateDisk",
+          "ecs:AttachDisk",
+          "ecs:DetachDisk",
+          "ecs:DescribeDisks",
+          "ecs:DeleteDisk",
+          "ecs:CreateSnapshot",
+          "ecs:DescribeSnapshots",
+          "ecs:DeleteSnapshot",
+          "ecs:AddTags",
+          "ecs:RemoveTags",
+          "ecs:DescribeTags"
+        ],
+        "Effect": "Allow",
+        "Resource": "*"
+      },{
+        "Action": "slb:*",
+        "Effect": "Allow",
+        "Resource": "*"
+      }]
+    }
+    ```
+
+1. Authorize the policy `AlicloudBoshDirector` to the role `bosh-director` using the same operations as [Authorize User Policy ](alicloud-ram-users.html#authorize)
+
+    <%= image_tag("images/deploy-bosh-to-alicloud/authorize-ram-role.png") %>
+
+2. Change deployment manifest for the Bosh Director to configure Alicloud CPI to use `bosh-director` RAM Role:
+
+    ```yaml
+    resource_pools:
+    - name: default
+      network: default
+      stemcell:
+        name: bosh-stemcell-alicloud-kvm-ubuntu-trusty-go_agent
+        version: 1010
+      cloud_properties:
+        instance_type: ecs.n4.small
+        slbs: ["lb-2zegrgbsmjvxx1r1v26pn"]
+        system_disk: {"size": "61_440", "category": "cloud_efficiency"}
+        ram_role_name: bosh-director
+    ```
+
+---
+[Back to Table of Contents](index.html#cpi-config)
+
+Previous: [Alicloud CPI](alicloud-cpi.html)

@@ -19,7 +19,7 @@ To configure your Alicloud account:
 ---
 ### <a id="credentials"></a> Obtain Alicloud Credentials
 
-Your Alicloud credentials consist of an Access Key ID and a Secret Access Key. Follow [Creating RAM Users](alicloud-iam-users.html#create) to create a new RAM user.
+Your Alicloud access key consist of an Access Key ID and a Secret Access Key. Follow [Creating RAM Users](alicloud-ram-users.html#create-user) to create a new RAM user.
 
 ---
 ### <a id="create-vpc"></a> Create a Virtual Private Cloud (VPC)
@@ -146,6 +146,7 @@ Your Alicloud credentials consist of an Access Key ID and a Secret Access Key. F
 
     <table border="1" class="nice">
       <tr>
+        <th>Direction</th>
         <th>Type</th>
         <th>Port Range</th>
         <th>Source</th>
@@ -153,12 +154,12 @@ Your Alicloud credentials consist of an Access Key ID and a Secret Access Key. F
         <th>Purpose</th>
       </tr>
 
-      <tr><td>Custom TCP Rule</td><td>22/22</td><td>(My IP)</td><td>1</td><td>SSH access from CLI</td></tr>
-      <tr><td>Custom TCP Rule</td><td>6868/6868</td><td>(My IP)</td><td>1</td><td>BOSH Agent access from CLI</td></tr>
-      <tr><td>Custom TCP Rule</td><td>25555/25555</td><td>(My IP)</td><td>1</td><td>BOSH Director access from CLI</td></tr>
-
-      <tr><td>All TCP</td><td>1/65535</td><td>0.0.0.0/0</td><td>10</td><td>Management and data access</td></tr>
-      <tr><td>All UDP</td><td>1/65535</td><td>0.0.0.0/0</td><td>10</td><td>Management and data access</td></tr>
+      <tr><td>Inbound</td><td>Custom TCP Rule</td><td>22/22</td><td>(My IP)</td><td>1</td><td>SSH access from CLI</td></tr>
+      <tr><td>Inbound</td><td>Custom TCP Rule</td><td>6868/6868</td><td>(My IP)</td><td>1</td><td>BOSH Agent access from CLI</td></tr>
+      <tr><td>Inbound</td><td>Custom TCP Rule</td><td>25555/25555</td><td>(My IP)</td><td>1</td><td>BOSH Director access from CLI</td></tr>
+      <tr><td>Inbound</td><td>All TCP</td><td>1/65535</td><td>0.0.0.0/0</td><td>10</td><td>Management and data access</td></tr>
+      <tr><td>Inbound</td><td>All UDP</td><td>1/65535</td><td>0.0.0.0/0</td><td>10</td><td>Management and data access</td></tr>
+      <tr><td>Outbound</td><td>All</td><td>-1/-1</td><td>0.0.0.0/0</td><td>1</td><td>Access Public data</td></tr>
     </table>
 
     <p class="note"><strong>Note</strong>:  Select *Authorization Type* to `Security Group Access` , click *Select the security group*. Note: The Alicloud Console should autocomplete the security group ID (e.g. "sg-0xiecd12ab34cd").</p>
