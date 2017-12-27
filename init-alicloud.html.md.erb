@@ -181,7 +181,7 @@ Your Alicloud access key consist of an Access Key ID and a Secret Access Key. Fo
     $ mkdir bosh-1 && cd bosh-1
 
     # Clone Director templates
-    $ git clone https://github.com/cloudfoundry/bosh-deployment
+    $ git clone https://github.cdom/cloudfoundry/bosh-deployment
 
     # Fill below variables (replace example values) and deploy the Director
     $ bosh create-env bosh-deployment/bosh.yml --state=state.json \
@@ -196,21 +196,13 @@ Your Alicloud access key consist of an Access Key ID and a Secret Access Key. Fo
        -v internal_ip=$BOSH_ENVIRONMENT \
        -v vswitch_id=... \
        -v security_group_id=... \
-       -v acccess_endpoint=eu-central-1.aliyuncs.com \
        -v access_key_id=... \
        -v access_key_secret=... \
        -v region=... \
-       -v zone=...
+       -v zone=... \
+       -v key_pair_name=... \
+       -v private_key=...
     </pre>
-
-    You can set `access_endpoint` near your region from the following list:
-
-    - Tokyo(ap-northeast-1): ap-northeast-1.aliyuncs.com
-    - Sydney(ap-southeast-2): ap-southeast-2.aliyuncs.com
-    - Dubai(me-east-1): me-east-1.aliyuncs.com
-    - Frankfurt(eu-central-1): eu-central-1.aliyuncs.com
-
-    You can use `aliyuncs.com` for most region and check https://github.com/denverdino/aliyungo/blob/master/common/endpoints.xml for more information.
 
     If running above commands outside of an Alicloud VPC, refer to [Exposing environment on a public IP](init-external-ip.html) for additional CLI flags.
 

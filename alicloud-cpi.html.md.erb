@@ -25,7 +25,7 @@ azs:
 Schema for `cloud_properties` section used by dynamic network or manual network subnet:
 
 * **vswitch_id** [String, required]: VSwitch ID in which the instance will be launched. Example: `vsw-0xipoq1c5q04z7xggxwcn`.
-* **security_group_id** [String, required]: [Security Group](https://www.alibabacloud.com/help/doc-detail/25468.htm) ID in which the instances will be placed. Example: `sg-0xiecbyds24g3b9dn14p`.
+* **security_group_ids** [String, required]: List [Security Group](https://www.alibabacloud.com/help/zh/doc-detail/25468.htm), by ID, to apply to all VMs placed on this network. Example: `["sg-0xiecbyds24g3b9dn14p"]`
 
 Example of manual network:
 
@@ -39,7 +39,7 @@ networks:
     ip: 172.168.0.3
     cloud_properties:
         vswitch_id: vsw-0xipoq1c5q04z7xggxwcn
-        security_group_id: sg-0xiecbyds24g3b9dn14p
+        security_group_ids: ["sg-0xiecbyds24g3b9dn14p"]
 ```
 
 Example of dynamic network:
@@ -50,7 +50,7 @@ networks:
   type: dynamic
   cloud_properties:
     vswitch_id: vsw-0xipoq1c5q04z7xggxwcn
-    security_group_id: sg-0xiecbyds24g3b9dn14p
+    security_group_ids: ["sg-0xiecbyds24g3b9dn14p"]
 ```
 
 Example of vip network:
@@ -225,21 +225,25 @@ networks:
     dns: [8.8.8.8]
     cloud_properties:
       vswitch_id: vsw-2zeamad3a8cscoicqb5c5
-      security_group_id: sg-2zei0mcphxbdxj49qtmz
+      security_group_ids:
+        - sg-2zei0mcphxbdxj49qtmz
+        - sg-2zei2ecpsedtdxj23wert
   - range: 172.16.11.0/24
     gateway: 172.16.11.1
     az: z2
     dns: [8.8.8.8]
     cloud_properties:
       vswitch_id: vsw-2zerkt1jluc2xdxygeu5t
-      security_group_id: sg-2zei0mcphxbdxj49qtmz
+      security_group_ids:
+        - sg-2zei0mcphxbdxj49qtmz
+        - sg-2zei2ecpsedtdxj23wert
   - range: 172.16.12.0/24
     gateway: 172.16.12.1
     az: z3
     dns: [8.8.8.8]
     cloud_properties:
       vswitch_id: vsw-2zedja4ggcyrahgz0s7cc
-      security_group_id: sg-2zei0mcphxbdxj49qtmz
+      security_group_ids: ["sg-2zei0mcphxbdxj49qtmz"]
 - name: vip
   type: vip
 
@@ -262,7 +266,13 @@ The quota of your ECS disk has reached its maximum. Please delete useless disks 
 ```
 Code:"AliyunGoClientFailure", Message:"Get https://slb-pop.aliyuncs.com?******: dial tcp: lookup slb-pop.aliyuncs.com on 172.18.0.7:53: read udp 10.254.1.150:40964->172.18.0.7:53: i/o timeout"
 ```
-You need set an appropriate endpoint to avoid network delay.
+This error results from bad network environment. You can wait for several seconds and have a try again.
+
+```
+Waiting until instance is ready:
+      Post https://mbus:<redacted>@172.16.0.3:6868/agent: dial tcp 172.16.0.3:6868: getsockopt: connection refused
+```
+You need to give bosh director a public network environment. Recommend to use nat gateway and configure SNAT for it.
 
 ---
 Next: [Using Alicloud RAM Role](alicloud-ram-role.html)
